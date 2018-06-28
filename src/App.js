@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React, { Component } from 'react'
 import { BasicEditor } from './Draft/BasicEditor'
+import { BasicWithContent } from './Draft/BasicWithContent'
 
 class App extends Component {
   render() {
@@ -14,6 +15,14 @@ class App extends Component {
           <h3>Basic Editor</h3>
           <p>Has linebreaks and spellcheck, no styles.</p>
           <BasicEditor />
+        </EditorContainer>
+
+        <EditorContainer>
+          <h3>Basic Editor with Content</h3>
+          <p>Extends basic editor to initialize with existing content.</p>
+          <BasicWithContent
+            content="Content editable is so passe"
+          />
         </EditorContainer>
       </div>
     )

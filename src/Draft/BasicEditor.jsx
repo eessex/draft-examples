@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { Editor, EditorState } from 'draft-js'
 import { EditorContainer } from '../styles'
 
-export class BasicEditor extends Component {
-  // A plain-text editor
-  // Allows linebreaks to create paragraphs without styles
-  // Spell check enabled
+// A plain-text editor that initializes as empty
+// Allows linebreaks to create paragraphs without styles
+// Spell check enabled
 
+export class BasicEditor extends Component {
   static editor
   state = {
     editorState: EditorState.createEmpty()
@@ -29,6 +29,7 @@ export class BasicEditor extends Component {
           ref={(ref) => { this.editor = ref }}
           editorState={editorState}
           onChange={this.onChange}
+          placeholder="Click to start typing..."
           spellCheck
          />
       </EditorContainer>
