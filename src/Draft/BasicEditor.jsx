@@ -3,6 +3,10 @@ import { Editor, EditorState } from 'draft-js'
 import { EditorContainer } from './styles'
 
 export class BasicEditor extends Component {
+  // A plain-text editor
+  // Allows linebreaks to create paragraphs without styles
+  // Spell check enabled
+
   static editor
   state = {
     editorState: EditorState.createEmpty()
