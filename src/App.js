@@ -11,6 +11,8 @@ class App extends Component {
         </HeaderContainer>
 
         <EditorContainer>
+          <h3>Basic Editor</h3>
+          <p>Has linebreaks and spellcheck, no styles.</p>
           <BasicEditor />
         </EditorContainer>
       </div>
