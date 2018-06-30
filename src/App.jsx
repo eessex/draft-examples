@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { BasicEditor } from './Draft/BasicEditor'
 import { BasicWithContent } from './Draft/BasicWithContent'
 import { HtmlEditor } from './Draft/HtmlEditor'
+import { HtmlEditorAllBlocks } from './Draft/HtmlEditorAllBlocks'
 
 export class App extends Component {
   render() {
@@ -38,6 +39,26 @@ export class App extends Component {
             <p><b>⌘</b> <code>bold, italic, underline, code, undo, redo, copy, paste, select-all</code></p>
             <HtmlEditor
               html="<p><code>contenteditable</code> is <b><u>so</u></b> <em>passe</em>.</p>"
+            />
+          </EditorContainer>
+
+          <EditorContainer>
+            <h2>HTML Editor with All Blocks</h2>
+            <p>Extends HTML Editor to allow Blockquote, H1-H6, UL, OL</p>
+            <p><b>⌘</b> <code>bold, italic, underline, code, undo, redo, copy, paste, select-all</code></p>
+            <HtmlEditorAllBlocks
+              html="
+              <p><code>contenteditable</code> is <b><u>so</u></b> <em>passe</em>.</p>
+              <blockquote>Blockquote</blockquote>
+              <h6>Header 6</h6>
+              <h5>Header 5</h5>
+              <h4>Header 4</h4>
+              <h3>Header 3</h3>
+              <h2>Header 2</h2>
+              <h1>Header 1</h1>
+              <ul><li>Unordered List</li></ul>
+              <ol><li>Ordered List</li></ol>
+              "
             />
           </EditorContainer>
         </ContentContainer>
