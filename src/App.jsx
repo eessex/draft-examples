@@ -37,7 +37,7 @@ export class App extends Component {
             </p>
             <p><b>⌘</b> <code>bold, italic, underline, code, undo, redo, copy, paste, select-all</code></p>
             <HtmlEditor
-              content="<p><code>contenteditable</code> is <b><u>so</u></b> <em>passe</em>.</p>"
+              html="<p><code>contenteditable</code> is <b><u>so</u></b> <em>passe</em>.</p>"
             />
           </EditorContainer>
         </ContentContainer>

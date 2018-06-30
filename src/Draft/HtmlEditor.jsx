@@ -16,7 +16,7 @@ import { EditorContainer } from '../styles'
 export class HtmlEditor extends Component {
   static editor
   static propTypes = {
-    content: PropTypes.string
+    html: PropTypes.string
   }
 
   constructor (props) {
@@ -24,15 +24,15 @@ export class HtmlEditor extends Component {
 
     this.state = {
       editorState: this.setEditorState(),
-      html: props.content || ''
+      html: props.html || ''
     }
   }
 
   setEditorState = () => {
-    const { content } = this.props
+    const { html } = this.props
 
-    if (content) {
-      return this.editorStateFromHTML(content)
+    if (html) {
+      return this.editorStateFromHTML(html)
     } else {
       return EditorState.createEmpty()
     }
