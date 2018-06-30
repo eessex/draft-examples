@@ -53,10 +53,10 @@ export class BasicWithContent extends Component {
     return (
       <EditorContainer onClick={this.focus}>
         <Editor
-          ref={(ref) => { this.editor = ref }}
           editorState={editorState}
           onChange={this.onChange}
           placeholder="Click to start typing..."
+          ref={(ref) => { this.editor = ref }}
           spellCheck
          />
       </EditorContainer>
