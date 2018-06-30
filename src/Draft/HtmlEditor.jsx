@@ -11,7 +11,8 @@ import {
 } from 'draft-js'
 import { EditorContainer } from '../styles'
 
-// Import and export HTML with bold and italic styles
+// Accepts HTML with bold, italic, underline and code styles,
+// Converts editorState to HTML on change
 export class HtmlEditor extends Component {
   static editor
   static propTypes = {
@@ -59,11 +60,12 @@ export class HtmlEditor extends Component {
   handleKeyCommand = command => {
     const { editorState } = this.state
     const newState = RichUtils.handleKeyCommand(editorState, command)
-
+    // If an updated state is returned, the command is handled
     if (newState) {
       this.onChange(newState)
       return 'handled'
     }
+    // Otherwise let the browser handle it
     return 'not-handled'
   }
 
