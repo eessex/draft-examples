@@ -104,20 +104,26 @@ export class HtmlEditorAllBlocks extends Component {
   }
 
   render() {
-    const { editorState } = this.state
+    const { editorState, html } = this.state
 
     return (
-      <EditorContainer onClick={this.focus}>
-        <Editor
-          editorState={editorState}
-          handleKeyCommand={this.handleKeyCommand}
-          keyBindingFn={keyBindingFn}
-          onChange={this.onChange}
-          placeholder="Click to start typing..."
-          ref={(ref) => { this.editor = ref }}
-          spellCheck
-         />
-      </EditorContainer>
+      <div>
+        <EditorContainer onClick={this.focus}>
+          <Editor
+            editorState={editorState}
+            handleKeyCommand={this.handleKeyCommand}
+            keyBindingFn={keyBindingFn}
+            onChange={this.onChange}
+            placeholder="Click to start typing..."
+            ref={(ref) => { this.editor = ref }}
+            spellCheck
+          />
+        </EditorContainer>
+        <div>
+          <p><code>state.html</code>:</p>
+          <p>{html}</p>
+        </div>
+      </div>
     )
   }
 }

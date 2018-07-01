@@ -74,9 +74,10 @@ export class HtmlEditor extends Component {
   }
 
   render() {
-    const { editorState } = this.state
+    const { editorState, html } = this.state
 
     return (
+      <div>
       <EditorContainer onClick={this.focus}>
         <Editor
           blockRenderMap={blockRenderMap}
@@ -88,6 +89,11 @@ export class HtmlEditor extends Component {
           spellCheck
          />
       </EditorContainer>
+      <div>
+        <p><code>state.html</code>:</p>
+        <p>{html}</p>
+      </div>
+      </div>
     )
   }
 }

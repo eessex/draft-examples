@@ -14,4 +14,8 @@ export const EditorContainer = styled.div`
     color: ${colors.gray};
     position: absolute;
   }
+
+  .public-DraftStyleDefault-block {
+    margin-bottom: 1em;
+  }
 `

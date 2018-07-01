@@ -41,14 +41,12 @@ export class App extends Component {
               html="<p><code>contenteditable</code> is <b><u>so</u></b> <em>passe</em>.</p>"
             />
           </EditorContainer>
-
           <EditorContainer>
             <h2>HTML Editor with All Blocks</h2>
             <p>Extends HTML Editor to allow Blockquote, H1-H6, UL, OL</p>
             <p><b>⌘</b> <code>bold, italic, underline, code, undo, redo, copy, paste, select-all</code></p>
             <HtmlEditorAllBlocks
-              html="
-              <p><code>contenteditable</code> is <b><u>so</u></b> <em>passe</em>.</p>
+              html="<p><code>contenteditable</code> is <strong><u>so</u></strong> <em>passe</em>.</p>
               <blockquote>Blockquote</blockquote>
               <h6>Header 6</h6>
               <h5>Header 5</h5>
@@ -86,7 +84,7 @@ const ContentContainer = styled.div`
 `
 
 const EditorContainer = styled.div`
-  padding-bottom: 40px;
+  padding-bottom: 60px;
   h2 {
     margin-bottom: 0;
   }
