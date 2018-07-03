@@ -11,7 +11,7 @@ import {
   KeyBindingUtil,
   RichUtils
 } from 'draft-js'
-import { EditorContainer } from '../styles'
+import { EditorContainer } from '../../styles'
 
 const allowedStyles = [
   'bold',
@@ -28,8 +28,8 @@ const allowedBlocks = [
   'header-four',
   'header-five',
   'header-six',
-  'ordered-list',
-  'unordered-list'
+  'ordered-list-item',
+  'unordered-list-item'
 ]
 
 /*
@@ -37,7 +37,7 @@ const allowedBlocks = [
   as well as H1-H6, UL, OL, and blockquote elements.
   Converts editorState to HTML on change.
 */
-export class HtmlEditorAllBlocks extends Component {
+export class RichText extends Component {
   static editor
   static propTypes = {
     html: PropTypes.string
@@ -73,11 +73,13 @@ export class HtmlEditorAllBlocks extends Component {
   }
 
   onChange = editorState => {
+    const { onChange } = this.props
     const html = this.editorStateToHtml(editorState)
-    if (html !== this.state.html) {
-      console.log(html)
-    }
+
     this.setState({ editorState, html })
+    if (html !== this.state.html) {
+      onChange(html)
+    }
   }
 
   focus = () => {
@@ -89,7 +91,7 @@ export class HtmlEditorAllBlocks extends Component {
     let newState
 
     if (allowedStyles.includes(command)) {
-      newState = RichUtils.handleKeyCommand(editorState, command)
+      newState = RichUtils.toggleInlineStyle(editorState, command.toUpperCase())
     } else if (allowedBlocks.includes(command)) {
       newState = RichUtils.toggleBlockType(editorState, command)
     }

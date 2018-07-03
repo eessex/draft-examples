@@ -10,14 +10,14 @@ import {
   EditorState,
   RichUtils
 } from 'draft-js'
-import { EditorContainer } from '../styles'
+import { EditorContainer } from '../../styles'
 
 /*
   Accepts HTML with bold, italic, underline and code styles
   Converts editorState to HTML on change
   HTML blocks types are limited to paragraph
 */
-export class HtmlEditor extends Component {
+export class Paragraph extends Component {
   static editor
   static propTypes = {
     html: PropTypes.string

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Editor, EditorState } from 'draft-js'
-import { EditorContainer } from '../styles'
+import { EditorContainer } from '../../styles'
 
 /*
   A plain-text editor that initializes empty

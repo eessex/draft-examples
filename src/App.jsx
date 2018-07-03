@@ -1,10 +1,9 @@
 import styled from 'styled-components'
 import React, { Component } from 'react'
-import { BasicEditor } from './Draft/BasicEditor'
-import { BasicWithContent } from './Draft/BasicWithContent'
-import { HtmlEditor } from './Draft/HtmlEditor'
-import { HtmlEditorAllBlocks } from './Draft/HtmlEditorAllBlocks'
-import { PlainText } from './Draft/PlainText'
+import { BasicEditor } from './Draft/Basic/BasicEditor'
+import { Paragraph } from './Draft/Paragraph/Paragraph'
+import { RichText } from './Draft/RichText/RichText'
+import { PlainText } from './Draft/PlainText/PlainText'
 
 export class App extends Component {
   render() {
@@ -17,25 +16,17 @@ export class App extends Component {
         <ContentContainer>
           <EditorContainer>
             <h2>Basic Editor</h2>
-            <p>Has line-breaks and spellcheck, no styles.</p>
+            <p>Minimum requirements for a functional Draft.js editor. No styles included, line breaks are allowed, spellcheck is visible when focused.</p>
             <p><b>⌘</b> <code>undo, redo, copy, paste, select-all</code></p>
             <BasicEditor />
           </EditorContainer>
 
           <EditorContainer>
-            <h2>Basic Editor with Content</h2>
-            <p>Extends Basic Editor to accept plain text strings as <code>props.content</code>.</p>
-            <p><b>⌘</b> <code>undo, redo, copy, paste, select-all</code></p>
-            <BasicWithContent
-              content="Content editable is so passe."
-            />
-          </EditorContainer>
-
-          <EditorContainer>
             <h2>Plain Text</h2>
-            <p>Replaces <code>textarea</code> or <code>input</code>,
+            <p>A suitable replacement for a <code>textarea</code> or <code>input</code>, this editor
             accepts a plain-text string as <code>props.content</code>.
-            Height changes based on content, linebreaks are disallowed.</p>
+            A new string is returned to the function <code>props.onChange</code> if the content has changed.
+            Height adjusts to text length, linebreaks are disallowed.</p>
             <p><b>⌘</b> <code>undo, redo, copy, paste, select-all</code></p>
             <PlainText
               content="Content editable is so passe."
@@ -44,21 +35,24 @@ export class App extends Component {
           </EditorContainer>
 
           <EditorContainer>
-            <h2>HTML Editor</h2>
+            <h2>Paragraph</h2>
             <p>
-              Accepts input as HTML strings, stores converted editorState as <code>state.html</code>.
-              Supports bold, italic, underline, and code rich-text styles.
+              Accepts input as HTML strings, and stores converted editorState as <code>state.html</code>.
+              Supports bold, italic, underline, and code rich-text styles nested inside paragraphs.
             </p>
             <p><b>⌘</b> <code>bold, italic, underline, code, undo, redo, copy, paste, select-all</code></p>
-            <HtmlEditor
+            <Paragraph
               html="<p><code>contenteditable</code> is <b><u>so</u></b> <em>passe</em>.</p>"
+              onChange={(content) => {}}
             />
           </EditorContainer>
+
           <EditorContainer>
-            <h2>HTML Editor with All Blocks</h2>
-            <p>Extends HTML Editor to allow Blockquote, H1-H6, UL, OL</p>
-            <p><b>⌘</b> <code>bold, italic, underline, code, undo, redo, copy, paste, select-all</code></p>
-            <HtmlEditorAllBlocks
+            <h2>Rich Text</h2>
+            <p>HTML Editor with a range of elements including blockquote, H1-H6, UL, OL</p>
+            <p><b>⌘</b> <code>H1-H6, blockquote, ul, ol, bold, italic, underline, code, undo, redo, copy, paste, select-all</code></p>
+            <RichText
+              onChange={(content) => {}}
               html="<p><code>contenteditable</code> is <strong><u>so</u></strong> <em>passe</em>.</p>
               <blockquote>Blockquote</blockquote>
               <h6>Header 6</h6>
