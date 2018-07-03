@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import { BasicEditor } from './Draft/BasicEditor'
 import { BasicWithContent } from './Draft/BasicWithContent'
 import { HtmlEditor } from './Draft/HtmlEditor'
+import { HtmlEditorAllBlocks } from './Draft/HtmlEditorAllBlocks'
+import { PlainText } from './Draft/PlainText'
 
 export class App extends Component {
   render() {
@@ -30,6 +32,18 @@ export class App extends Component {
           </EditorContainer>
 
           <EditorContainer>
+            <h2>Plain Text</h2>
+            <p>Replaces <code>textarea</code> or <code>input</code>,
+            accepts a plain-text string as <code>props.content</code>.
+            Height changes based on content, linebreaks are disallowed.</p>
+            <p><b>⌘</b> <code>undo, redo, copy, paste, select-all</code></p>
+            <PlainText
+              content="Content editable is so passe."
+              onChange={(content) => {}}
+            />
+          </EditorContainer>
+
+          <EditorContainer>
             <h2>HTML Editor</h2>
             <p>
               Accepts input as HTML strings, stores converted editorState as <code>state.html</code>.
@@ -38,6 +52,24 @@ export class App extends Component {
             <p><b>⌘</b> <code>bold, italic, underline, code, undo, redo, copy, paste, select-all</code></p>
             <HtmlEditor
               html="<p><code>contenteditable</code> is <b><u>so</u></b> <em>passe</em>.</p>"
+            />
+          </EditorContainer>
+          <EditorContainer>
+            <h2>HTML Editor with All Blocks</h2>
+            <p>Extends HTML Editor to allow Blockquote, H1-H6, UL, OL</p>
+            <p><b>⌘</b> <code>bold, italic, underline, code, undo, redo, copy, paste, select-all</code></p>
+            <HtmlEditorAllBlocks
+              html="<p><code>contenteditable</code> is <strong><u>so</u></strong> <em>passe</em>.</p>
+              <blockquote>Blockquote</blockquote>
+              <h6>Header 6</h6>
+              <h5>Header 5</h5>
+              <h4>Header 4</h4>
+              <h3>Header 3</h3>
+              <h2>Header 2</h2>
+              <h1>Header 1</h1>
+              <ul><li>Unordered List</li></ul>
+              <ol><li>Ordered List</li></ol>
+              "
             />
           </EditorContainer>
         </ContentContainer>
@@ -65,7 +97,7 @@ const ContentContainer = styled.div`
 `
 
 const EditorContainer = styled.div`
-  padding-bottom: 40px;
+  padding-bottom: 60px;
   h2 {
     margin-bottom: 0;
   }
