@@ -10,7 +10,7 @@ import {
   EditorState,
   RichUtils
 } from 'draft-js'
-import { EditorContainer } from '../styles'
+import { EditorContainer } from '../../styles'
 
 /*
   Accepts HTML with bold, italic, underline and code styles

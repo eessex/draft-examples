@@ -5,13 +5,18 @@ import {
   Editor,
   EditorState
 } from 'draft-js'
-import { EditorContainer } from '../styles'
+import { InputContainer } from '../../styles'
 
-// Extends BasicEditor to accept props.content
-export class BasicWithContent extends Component {
+/*
+  A flexible replacement for a text input,
+  accepts props.content and returns a plain-text
+  string on change. No linebreaks allowed.
+*/
+export class PlainText extends Component {
   static editor
   static propTypes = {
-    content: PropTypes.string
+    content: PropTypes.string,
+    onChange: PropTypes.func
   }
 
   constructor (props) {
@@ -40,7 +45,14 @@ export class BasicWithContent extends Component {
   }
 
   onChange = editorState => {
+    const { onChange } = this.props
+    const content = editorState.getCurrentContent().getPlainText()
+
     this.setState({ editorState })
+    if (content !== this.props.content) {
+      // Return state as plain-text string
+      onChange(content)
+    }
   }
 
   focus = () => {
@@ -51,15 +63,16 @@ export class BasicWithContent extends Component {
     const { editorState } = this.state
 
     return (
-      <EditorContainer onClick={this.focus}>
+      <InputContainer onClick={this.focus}>
         <Editor
           editorState={editorState}
+          handleReturn={() => 'handled'}
           onChange={this.onChange}
           placeholder="Click to start typing..."
           ref={(ref) => { this.editor = ref }}
           spellCheck
          />
-      </EditorContainer>
+      </InputContainer>
     )
   }
 }

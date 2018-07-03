@@ -11,7 +11,7 @@ import {
   KeyBindingUtil,
   RichUtils
 } from 'draft-js'
-import { EditorContainer } from '../styles'
+import { EditorContainer } from '../../styles'
 
 const allowedStyles = [
   'bold',

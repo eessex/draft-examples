@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 import React, { Component } from 'react'
-import { BasicEditor } from './Draft/BasicEditor'
-import { BasicWithContent } from './Draft/BasicWithContent'
-import { HtmlEditor } from './Draft/HtmlEditor'
-import { HtmlEditorAllBlocks } from './Draft/HtmlEditorAllBlocks'
-import { PlainText } from './Draft/PlainText'
+import { BasicEditor } from './Draft/Basic/BasicEditor'
+import { BasicWithContent } from './Draft/Basic/BasicWithContent'
+import { HtmlEditor } from './Draft/Html/HtmlEditor'
+import { HtmlEditorAllBlocks } from './Draft/Html/HtmlEditorAllBlocks'
+import { PlainText } from './Draft/PlainText/PlainText'
 
 export class App extends Component {
   render() {
