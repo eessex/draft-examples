@@ -28,8 +28,8 @@ const allowedBlocks = [
   'header-four',
   'header-five',
   'header-six',
-  'ordered-list',
-  'unordered-list'
+  'ordered-list-item',
+  'unordered-list-item'
 ]
 
 /*
@@ -73,11 +73,13 @@ export class RichText extends Component {
   }
 
   onChange = editorState => {
+    const { onChange } = this.props
     const html = this.editorStateToHtml(editorState)
-    if (html !== this.state.html) {
-      console.log(html)
-    }
+
     this.setState({ editorState, html })
+    if (html !== this.state.html) {
+      onChange(html)
+    }
   }
 
   focus = () => {
@@ -89,7 +91,7 @@ export class RichText extends Component {
     let newState
 
     if (allowedStyles.includes(command)) {
-      newState = RichUtils.handleKeyCommand(editorState, command)
+      newState = RichUtils.toggleInlineStyle(editorState, command.toUpperCase())
     } else if (allowedBlocks.includes(command)) {
       newState = RichUtils.toggleBlockType(editorState, command)
     }

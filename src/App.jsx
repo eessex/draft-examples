@@ -43,6 +43,7 @@ export class App extends Component {
             <p><b>⌘</b> <code>bold, italic, underline, code, undo, redo, copy, paste, select-all</code></p>
             <Paragraph
               html="<p><code>contenteditable</code> is <b><u>so</u></b> <em>passe</em>.</p>"
+              onChange={(content) => {}}
             />
           </EditorContainer>
 
@@ -51,6 +52,7 @@ export class App extends Component {
             <p>HTML Editor with a range of elements including blockquote, H1-H6, UL, OL</p>
             <p><b>⌘</b> <code>H1-H6, blockquote, ul, ol, bold, italic, underline, code, undo, redo, copy, paste, select-all</code></p>
             <RichText
+              onChange={(content) => {}}
               html="<p><code>contenteditable</code> is <strong><u>so</u></strong> <em>passe</em>.</p>
               <blockquote>Blockquote</blockquote>
               <h6>Header 6</h6>
