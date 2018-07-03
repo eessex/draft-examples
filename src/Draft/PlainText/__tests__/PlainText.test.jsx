@@ -1,14 +1,14 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import { Editor } from 'draft-js'
-import { BasicWithContent } from '../BasicWithContent'
+import { PlainText } from '../PlainText'
 
-describe('BasicWithContent', () => {
+describe('PlainText', () => {
   const content = "Man running from cops stops to pet cats."
 
   const getWrapper = () => {
     return mount(
-      <BasicWithContent content={content} />
+      <PlainText content={content} />
     )
   }
 

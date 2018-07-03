@@ -17,7 +17,7 @@ import { EditorContainer } from '../../styles'
   Converts editorState to HTML on change
   HTML blocks types are limited to paragraph
 */
-export class HtmlEditor extends Component {
+export class Paragraph extends Component {
   static editor
   static propTypes = {
     html: PropTypes.string

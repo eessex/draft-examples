@@ -37,7 +37,7 @@ const allowedBlocks = [
   as well as H1-H6, UL, OL, and blockquote elements.
   Converts editorState to HTML on change.
 */
-export class HtmlEditorAllBlocks extends Component {
+export class RichText extends Component {
   static editor
   static propTypes = {
     html: PropTypes.string

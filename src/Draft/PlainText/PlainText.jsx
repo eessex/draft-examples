@@ -50,7 +50,7 @@ export class PlainText extends Component {
 
     this.setState({ editorState })
     if (content !== this.props.content) {
-      // Return state as plain-text string
+      // Return plain-text string if content has changed
       onChange(content)
     }
   }
