@@ -4,6 +4,7 @@ import { BasicEditor } from './Draft/BasicEditor'
 import { BasicWithContent } from './Draft/BasicWithContent'
 import { HtmlEditor } from './Draft/HtmlEditor'
 import { HtmlEditorAllBlocks } from './Draft/HtmlEditorAllBlocks'
+import { PlainText } from './Draft/PlainText'
 
 export class App extends Component {
   render() {
@@ -27,6 +28,18 @@ export class App extends Component {
             <p><b>⌘</b> <code>undo, redo, copy, paste, select-all</code></p>
             <BasicWithContent
               content="Content editable is so passe."
+            />
+          </EditorContainer>
+
+          <EditorContainer>
+            <h2>Plain Text</h2>
+            <p>Replaces <code>textarea</code> or <code>input</code>,
+            accepts a plain-text string as <code>props.content</code>.
+            Height changes based on content, linebreaks are disallowed.</p>
+            <p><b>⌘</b> <code>undo, redo, copy, paste, select-all</code></p>
+            <PlainText
+              content="Content editable is so passe."
+              onChange={(content) => {}}
             />
           </EditorContainer>
 
