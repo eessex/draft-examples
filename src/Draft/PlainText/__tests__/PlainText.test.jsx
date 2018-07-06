@@ -4,7 +4,7 @@ import { Editor } from 'draft-js'
 import { PlainText } from '../PlainText'
 
 describe('PlainText', () => {
-  const content = "Man running from cops stops to pet cats."
+  const content = 'Man running stops to pet cats.'
 
   const getWrapper = () => {
     return mount(
