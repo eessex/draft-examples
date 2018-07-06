@@ -20,7 +20,8 @@ import { EditorContainer } from '../../styles'
 export class Paragraph extends Component {
   static editor
   static propTypes = {
-    html: PropTypes.string
+    html: PropTypes.string,
+    onChange: PropTypes.func
   }
 
   constructor (props) {
@@ -53,8 +54,14 @@ export class Paragraph extends Component {
   }
 
   onChange = editorState => {
+    const { onChange } = this.props
     const html = this.editorStateToHtml(editorState)
+
     this.setState({ editorState, html })
+    if (html !== this.props.html) {
+      // Return html if changed
+      onChange(html)
+    }
   }
 
   focus = () => {
@@ -65,6 +72,7 @@ export class Paragraph extends Component {
     const { editorState } = this.state
     const newState = RichUtils.handleKeyCommand(editorState, command)
     // If an updated state is returned, the command is handled
+
     if (newState) {
       this.onChange(newState)
       return 'handled'

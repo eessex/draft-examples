@@ -1,6 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import { Editor } from 'draft-js'
+import { Editor, EditorState } from 'draft-js'
 import { EditorContainer } from '../../../styles'
 import { moveSelectionToEnd } from '../../helpers'
 import { RichText } from '../RichText'
@@ -11,6 +11,17 @@ describe('RichText', () => {
   const getWrapper = props => {
     return mount(
       <RichText {...props} />
+    )
+  }
+
+  const getSelection = editorState => {
+    const selection = editorState.getSelection().merge({
+      focusOffset: 3,
+      hasFocus: true
+    })
+    return EditorState.acceptSelection(
+      editorState,
+      selection
     )
   }
 
@@ -66,6 +77,110 @@ describe('RichText', () => {
 
   describe('Key commands', () => {
     const paragraph = '<p>Man running stops to pet cats.</p>'
+
+    describe('Styles', () => {
+      describe('Bold', () => {
+        const boldParagraph = '<p><strong>Man</strong> running stops to pet cats.</p>'
+
+        it('Can toggle on', () => {
+          props.html = paragraph
+          const component = getWrapper(props)
+          const editorState = getSelection(component.state().editorState)
+          component.instance().setState({ editorState })
+          component.find('.public-DraftEditor-content').at(0).simulate('keyDown', {
+            keyCode: 66,
+            metaKey: false,
+            ctrlKey: true,
+            altKey: false,
+          })
+
+          expect(props.onChange).toBeCalledWith(boldParagraph)
+        })
+
+        it('Can toggle off', () => {
+          props.html = boldParagraph
+          const component = getWrapper(props)
+          const editorState = getSelection(component.state().editorState)
+          component.instance().setState({ editorState })
+          component.find('.public-DraftEditor-content').at(0).simulate('keyDown', {
+            keyCode: 66,
+            metaKey: false,
+            ctrlKey: true,
+            altKey: false,
+          })
+
+          expect(props.onChange).toBeCalledWith(paragraph)
+        })
+      })
+
+      describe('Code', () => {
+        const codeParagraph = '<p><code>Man</code> running stops to pet cats.</p>'
+
+        it('Can toggle on', () => {
+          props.html = paragraph
+          const component = getWrapper(props)
+          const editorState = getSelection(component.state().editorState)
+          component.instance().setState({ editorState })
+          component.find('.public-DraftEditor-content').at(0).simulate('keyDown', {
+            keyCode: 74,
+            metaKey: false,
+            ctrlKey: true,
+            altKey: false,
+          })
+
+          expect(props.onChange).toBeCalledWith(codeParagraph)
+        })
+
+        it('Can toggle off', () => {
+          props.html = codeParagraph
+          const component = getWrapper(props)
+          const editorState = getSelection(component.state().editorState)
+          component.instance().setState({ editorState })
+          component.find('.public-DraftEditor-content').at(0).simulate('keyDown', {
+            keyCode: 74,
+            metaKey: false,
+            ctrlKey: true,
+            altKey: false,
+          })
+
+          expect(props.onChange).toBeCalledWith(paragraph)
+        })
+      })
+
+      describe('Italic', () => {
+        const italicParagraph = '<p><em>Man</em> running stops to pet cats.</p>'
+
+        it('Can toggle on', () => {
+          props.html = paragraph
+          const component = getWrapper(props)
+          const editorState = getSelection(component.state().editorState)
+          component.instance().setState({ editorState })
+          component.find('.public-DraftEditor-content').at(0).simulate('keyDown', {
+            keyCode: 73,
+            metaKey: false,
+            ctrlKey: true,
+            altKey: false,
+          })
+
+          expect(props.onChange).toBeCalledWith(italicParagraph)
+        })
+
+        it('Can toggle off', () => {
+          props.html = italicParagraph
+          const component = getWrapper(props)
+          const editorState = getSelection(component.state().editorState)
+          component.instance().setState({ editorState })
+          component.find('.public-DraftEditor-content').at(0).simulate('keyDown', {
+            keyCode: 73,
+            metaKey: false,
+            ctrlKey: true,
+            altKey: false,
+          })
+
+          expect(props.onChange).toBeCalledWith(paragraph)
+        })
+      })
+    })
 
     describe('Blocks', () => {
       describe('H1', () => {
