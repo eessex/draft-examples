@@ -2,7 +2,6 @@ import React from 'react'
 import { mount } from 'enzyme'
 import { Editor, EditorState } from 'draft-js'
 import { EditorContainer } from '../../../styles'
-import { moveSelectionToEnd } from '../../helpers'
 import { RichText } from '../RichText'
 
 describe('RichText', () => {
