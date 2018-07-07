@@ -10,7 +10,7 @@ export const decorators = () => {
   ])
 }
 
-const findLinkEntities = (contentBlock, callback, contentState) => {
+export const findLinkEntities = (contentBlock, callback, contentState) => {
   contentBlock.findEntityRanges(
     (character) => {
       const entityKey = character.getEntity()
@@ -32,4 +32,18 @@ const Link = props => {
       {children}
     </a>
   )
+}
+
+export const getSelectionLinkData = editorState => {
+  const contentState = editorState.getCurrentContent()
+  const selection = editorState.getSelection()
+  const startKey = selection.getStartKey()
+  const startOffset = selection.getStartOffset()
+  const blockWithLink = contentState.getBlockForKey(startKey)
+  const linkKey = blockWithLink.getEntityAt(startOffset)
+
+  if (linkKey) {
+    const entity = contentState.getEntity(linkKey)
+    return entity.getData().url
+  }
 }

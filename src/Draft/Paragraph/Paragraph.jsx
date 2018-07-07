@@ -86,21 +86,21 @@ export class Paragraph extends Component {
 
     return (
       <div>
-      <EditorContainer onClick={this.focus}>
-        <Editor
-          blockRenderMap={blockRenderMap}
-          editorState={editorState}
-          handleKeyCommand={this.handleKeyCommand}
-          onChange={this.onChange}
-          placeholder="Click to start typing..."
-          ref={(ref) => { this.editor = ref }}
-          spellCheck
-         />
-      </EditorContainer>
-      <div>
-        <p><code>state.html</code>:</p>
-        <p>{html}</p>
-      </div>
+        <EditorContainer onClick={this.focus}>
+          <Editor
+            blockRenderMap={blockRenderMap}
+            editorState={editorState}
+            handleKeyCommand={this.handleKeyCommand}
+            onChange={this.onChange}
+            placeholder="Click to start typing..."
+            ref={(ref) => { this.editor = ref }}
+            spellCheck
+          />
+        </EditorContainer>
+        <div>
+          <p><code>state.html</code>:</p>
+          <p>{html}</p>
+        </div>
       </div>
     )
   }

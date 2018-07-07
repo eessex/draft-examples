@@ -10,8 +10,9 @@ import {
   EditorState,
   RichUtils
 } from 'draft-js'
-import { decorators } from '../decorators'
+import { decorators, getSelectionLinkData } from '../decorators'
 import { EditorContainer } from '../../styles'
+import { LinkInput } from '../LinkInput'
 
 // Extends Paragraph editor to use links
 export class ParagraphWithLinks extends Component {
@@ -26,7 +27,8 @@ export class ParagraphWithLinks extends Component {
 
     this.state = {
       editorState: this.setEditorState(),
-      html: props.html || ''
+      html: props.html || '',
+      showLinkInput: false
     }
   }
 
@@ -34,14 +36,16 @@ export class ParagraphWithLinks extends Component {
     const { html } = this.props
 
     if (html) {
-      return this.editorStateFromHTML(html, decorators())
+      return this.editorStateFromHTML(html)
     } else {
+      // Initialize editor with link support
       return EditorState.createEmpty(decorators())
     }
   }
 
   editorStateToHtml = editorState => {
     const currentContent = editorState.getCurrentContent()
+    // Tell convertToHTML how to handle links
     return convertToHTML({
       entityToHTML: (entity, originalText) => {
         if (entity.type === 'LINK') {
@@ -54,6 +58,7 @@ export class ParagraphWithLinks extends Component {
   }
 
   editorStateFromHTML = html => {
+    // Tell convertFromHTML how to handle links
     const contentBlocks = convertFromHTML({
       htmlToEntity: (nodeName, node, createEntity) => {
         let data
@@ -67,6 +72,7 @@ export class ParagraphWithLinks extends Component {
         }
       }
     })(html)
+    // Create with decorators to support links
     return EditorState.createWithContent(contentBlocks, decorators())
   }
 
@@ -98,26 +104,55 @@ export class ParagraphWithLinks extends Component {
     return 'not-handled'
   }
 
+  checkSelection = () => {
+    const { editorState } = this.state
+    const selection = editorState.getSelection()
+
+    if (!selection.isCollapsed()) {
+      const urlValue = getSelectionLinkData(editorState)
+      if (urlValue) {
+        this.setState({
+          showLinkInput: true,
+          urlValue
+        })
+      } else {
+        // show menu
+      }
+    }
+  }
+
   render() {
-    const { editorState, html } = this.state
+    const { editorState, html, showLinkInput, urlValue } = this.state
 
     return (
       <div>
-      <EditorContainer onClick={this.focus}>
-        <Editor
-          blockRenderMap={blockRenderMap}
-          editorState={editorState}
-          handleKeyCommand={this.handleKeyCommand}
-          onChange={this.onChange}
-          placeholder="Click to start typing..."
-          ref={(ref) => { this.editor = ref }}
-          spellCheck
-         />
-      </EditorContainer>
-      <div>
-        <p><code>state.html</code>:</p>
-        <p>{html}</p>
-      </div>
+        {showLinkInput &&
+          <LinkInput
+            urlValue={urlValue}
+            confirmLink={(url) => console.log(url)}
+            onClickOff={() => this.setState({showLinkInput: false})}
+          />
+        }
+        <EditorContainer
+          onKeyUp={this.checkSelection}
+          onMouseUp={this.checkSelection}
+        >
+          <div onClick={this.focus}>
+            <Editor
+              blockRenderMap={blockRenderMap}
+              editorState={editorState}
+              handleKeyCommand={this.handleKeyCommand}
+              onChange={this.onChange}
+              placeholder="Click to start typing..."
+              ref={(ref) => { this.editor = ref }}
+              spellCheck
+            />
+          </div>
+        </EditorContainer>
+        <div>
+          <p><code>state.html</code>:</p>
+          <p>{html}</p>
+        </div>
       </div>
     )
   }
