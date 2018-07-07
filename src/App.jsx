@@ -2,8 +2,10 @@ import styled from 'styled-components'
 import React, { Component } from 'react'
 import { BasicEditor } from './Draft/Basic/BasicEditor'
 import { Paragraph } from './Draft/Paragraph/Paragraph'
+import { ParagraphWithLinks } from './Draft/Paragraph/ParagraphWithLinks'
 import { RichText } from './Draft/RichText/RichText'
 import { PlainText } from './Draft/PlainText/PlainText'
+
 
 export class App extends Component {
   render() {
@@ -43,6 +45,16 @@ export class App extends Component {
             <p><b>⌘</b> <code>bold, italic, underline, code, undo, redo, copy, paste, select-all</code></p>
             <Paragraph
               html="<p><code>contenteditable</code> is <b><u>so</u></b> <em>passe</em>.</p>"
+              onChange={(content) => {}}
+            />
+          </EditorContainer>
+
+          <EditorContainer>
+            <h2>Paragraph with Links</h2>
+            <p>Extends the Paragraph editor to import and create links via <code>decorators</code>.</p>
+            <p><b>⌘</b> <code>bold, italic, underline, code, undo, redo, copy, paste, select-all</code></p>
+            <ParagraphWithLinks
+              html='<p><a href="https://www.w3schools.com/tags/att_global_contenteditable.asp">contenteditable</a> is <b><u>so</u></b> <em>passe</em>.</p>'
               onChange={(content) => {}}
             />
           </EditorContainer>
