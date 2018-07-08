@@ -131,7 +131,8 @@ export class RichText extends Component {
 }
 
 const keyBindingFn = e => {
-  // Set key commands
+  // Set key commands available in your editor
+  // Can also override browser command defaults
   if (KeyBindingUtil.hasCommandModifier(e)) {
     switch (e.keyCode) {
       case 49:
@@ -162,9 +163,12 @@ const keyBindingFn = e => {
         // command + [
         return 'blockquote'
       default:
+        // Allows existing commands to return default,
+        // you can stop them by returning 'not handled'
         return getDefaultKeyBinding(e)
     }
   }
   // still return default if no modifier
+  // so users can type content
   return getDefaultKeyBinding(e)
 }

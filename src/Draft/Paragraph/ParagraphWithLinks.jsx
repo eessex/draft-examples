@@ -1,13 +1,17 @@
 import Immutable from 'immutable'
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import {
   convertFromHTML,
   convertToHTML
 } from 'draft-convert'
 import {
+  getDefaultKeyBinding,
+  getVisibleSelectionRect,
   Editor,
   EditorState,
+  KeyBindingUtil,
   RichUtils
 } from 'draft-js'
 import { decorators, getSelectionLinkData } from '../decorators'
@@ -28,7 +32,8 @@ export class ParagraphWithLinks extends Component {
     this.state = {
       editorState: this.setEditorState(),
       html: props.html || '',
-      showLinkInput: false
+      showLinkInput: false,
+      navPosition: null
     }
   }
 
@@ -93,12 +98,19 @@ export class ParagraphWithLinks extends Component {
 
   handleKeyCommand = command => {
     const { editorState } = this.state
-    const newState = RichUtils.handleKeyCommand(editorState, command)
-    // If an updated state is returned, the command is handled
+    const hasSelection = !editorState.getSelection().isCollapsed()
 
-    if (newState) {
-      this.onChange(newState)
-      return 'handled'
+    if (command === "link-prompt" && hasSelection) {
+      // Use a key command to create a new link
+      this.promptForLink()
+    } else {
+      const newState = RichUtils.handleKeyCommand(editorState, command)
+      // If an updated state is returned, the command is handled
+
+      if (newState) {
+        this.onChange(newState)
+        return 'handled'
+      }
     }
     // Otherwise let the browser handle it
     return 'not-handled'
@@ -106,44 +118,123 @@ export class ParagraphWithLinks extends Component {
 
   checkSelection = () => {
     const { editorState } = this.state
-    const selection = editorState.getSelection()
+    const hasSelection = !editorState.getSelection().isCollapsed()
+    const urlValue = getSelectionLinkData(editorState)
 
-    if (!selection.isCollapsed()) {
-      const urlValue = getSelectionLinkData(editorState)
-      if (urlValue) {
-        this.setState({
-          showLinkInput: true,
-          urlValue
-        })
-      } else {
-        // show menu
+    if (hasSelection && urlValue) {
+      // Dont show input unless selection is link
+      this.promptForLink()
+    } else {
+      this.onClickOffLink()
+    }
+  }
+
+  onClickOffLink = () => {
+    this.setState({
+      navPosition: null,
+      showLinkInput: false,
+      urlValue: null
+    }, () => {
+      setTimeout(() => this.editor.focus(), 5)
+    })
+  }
+
+  promptForLink = () => {
+    const { editorState } = this.state
+    const urlValue = getSelectionLinkData(editorState) || ''
+    const navPosition = this.getSelectionPosition()
+
+    this.setState({
+      showLinkInput: true,
+      urlValue,
+      navPosition
+    })
+  }
+
+  getStateWithLink = url => {
+    const { editorState } = this.state
+    const currentContent = editorState
+      .getCurrentContent()
+      .createEntity(
+        'LINK',
+        'MUTABLE',
+        { url }
+      )
+    const entityKey = currentContent.getLastCreatedEntityKey()
+    const stateWithEntity = EditorState.set(
+      editorState,
+      { currentContent }
+    ) 
+    const newEditorState = RichUtils.toggleLink(
+      stateWithEntity,
+      stateWithEntity.getSelection(),
+      entityKey
+    )
+
+    return newEditorState
+  }
+
+  confirmLink = url => {
+    const editorState = this.getStateWithLink(url)
+
+    this.setState({
+      editorState,
+      showLinkInput: false,
+      urlValue: ''
+    }, () => {
+      setTimeout(() => this.editor.focus(), 0)
+    })
+  }
+
+  getSelectionPosition = () => {
+    if (this.editor) {
+      const editor = ReactDOM.findDOMNode(this.editor)
+      const editorPosition = editor.getBoundingClientRect()
+      const target = getVisibleSelectionRect(window)
+      const margin = 10 // inner padding of EditorContainer
+
+      const top = (target.top - editorPosition.top) + target.height + margin
+      const left = (target.left - editorPosition.left) + (target.width / 2) + margin
+
+      return {
+        top,
+        left
       }
     }
   }
 
   render() {
-    const { editorState, html, showLinkInput, urlValue } = this.state
+    const {
+      editorState,
+      html,
+      navPosition,
+      showLinkInput,
+      urlValue
+    } = this.state
 
     return (
-      <div>
+      <div style={{position: 'relative'}}>
         {showLinkInput &&
           <LinkInput
             urlValue={urlValue}
-            confirmLink={(url) => console.log(url)}
-            onClickOff={() => this.setState({showLinkInput: false})}
+            confirmLink={this.confirmLink}
+            onClickOff={this.onClickOffLink}
+            position={navPosition}
           />
         }
         <EditorContainer
           onKeyUp={this.checkSelection}
-          onMouseUp={this.checkSelection}
+          onClick={this.checkSelection}
         >
           <div onClick={this.focus}>
             <Editor
               blockRenderMap={blockRenderMap}
               editorState={editorState}
               handleKeyCommand={this.handleKeyCommand}
+              keyBindingFn={keyBindingFn}
               onChange={this.onChange}
               placeholder="Click to start typing..."
+              readOnly={showLinkInput}
               ref={(ref) => { this.editor = ref }}
               spellCheck
             />
@@ -175,3 +266,23 @@ const blockRenderMap = Immutable.Map({
     element: 'div'
   }
 })
+
+
+const keyBindingFn = e => {
+  // Set key commands available in your editor
+  // Can also override browser command defaults
+  if (KeyBindingUtil.hasCommandModifier(e)) {
+    switch (e.keyCode) {
+      case 75:
+      // command + k
+        return 'link-prompt'
+      default:
+        // Allows existing commands to return default,
+        // you can stop them by returning 'not handled'
+        return getDefaultKeyBinding(e)
+    }
+  }
+  // still return default if no modifier
+  // so users can type content
+  return getDefaultKeyBinding(e)
+}

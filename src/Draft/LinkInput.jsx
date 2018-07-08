@@ -7,7 +7,7 @@ export class LinkInput extends Component {
     confirmLink: PropTypes.func,
     onClickOff: PropTypes.func,
     removeLink: PropTypes.func,
-    selectionTarget: PropTypes.object,
+    position: PropTypes.object,
     urlValue: PropTypes.string
   }
 
@@ -31,32 +31,56 @@ export class LinkInput extends Component {
   }
 
   render() {
-    const { confirmLink } = this.props
+    const { confirmLink, position, onClickOff } = this.props
     const { url } = this.state
 
     return (
-      <LinkInputContainer>
-        <Arrow />
-        <input
-          defaultValue={url || ''}
-          onChange={this.onChange}
-          onKeyDown={this.onKeyDown}
-          placeholder='Paste or type a link'
-          autoFocus
-        />
-        <button onMouseDown={() => confirmLink(url)}>
-          Apply
-        </button>
-      </LinkInputContainer>
+      <div>
+        <OverlayBackground onClick={onClickOff} />
+        <LinkInputContainer position={position}>
+          <Arrow />
+          <input
+            defaultValue={url || ''}
+            onChange={this.onChange}
+            onKeyDown={this.onKeyDown}
+            placeholder='Paste or type a link'
+            autoFocus
+          />
+          <button onMouseDown={() => confirmLink(url)}>
+            Save
+          </button>
+        </LinkInputContainer>
+      </div>
     )
   }
 }
+
+const OverlayBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+`
 
 const LinkInputContainer = styled.div`
   padding: 8px;
   position: absolute;
   z-index: 10;
   background: #eee;
+  width: 200px;
+  display: flex;
+  top: calc(${({position}) => position.top}px + 10px);
+  left: calc(${({position}) => position.left}px - 100px);
+
+  input {
+    flex: 1;
+    padding: 5px 3px;
+    &:focus{
+      outline: none;
+    }
+  }
 `
 
 const Arrow = styled.div`

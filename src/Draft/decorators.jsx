@@ -26,9 +26,10 @@ export const findLinkEntities = (contentBlock, callback, contentState) => {
 const Link = props => {
   const { children, contentState, entityKey } = props
   const { url } = contentState.getEntity(entityKey).getData()
-  
+  const onClick = (e) => e.preventDefault()
+
   return (
-    <a href={url}>
+    <a href={url} onClick={onClick}>
       {children}
     </a>
   )
